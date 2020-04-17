@@ -11,7 +11,7 @@ print(type(ab))
 
 # list
 datas = [12, 1, 23]
-print(type(datas))
+print(type(datas)) 
 
 # 元组
 tdats = (12, 3, 2)
