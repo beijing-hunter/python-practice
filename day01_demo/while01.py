@@ -19,9 +19,9 @@ while count <= 5:
         break
     count += 1
 
-while count >= 3 and count<=12:
+while 3 <= count <= 12:
     print("while")
-    count+=1
+    count += 1
 else:
     print("else exit")
 
