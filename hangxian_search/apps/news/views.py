@@ -123,3 +123,10 @@ def search(request):
 
     context = {'newes': newes, 'flag': flag}
     return render(request, 'news/search.html', context=context)
+
+from .BankDao import *
+
+def findBankList(request):
+    banks=findAll()
+    context = {'info': banks}
+    return render(request, 'news/banklist.html', context=context)

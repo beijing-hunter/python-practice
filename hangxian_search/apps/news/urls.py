@@ -11,4 +11,5 @@ urlpatterns = [
 	path('search/', views.search, name='search'),
 	path('list/', views.news_list, name='news_list'),
 	path('add_comment/', views.add_comment, name='add_comment'),
+	path('banklist/', views.findBankList, name='findBankList'),
 ]
