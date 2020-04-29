@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/news/news.css' %}">
     {# 轮播图功能代码需要引入的bootstrap.min.js和bootstrap.min.css #}
     <link rel="stylesheet" href="{% static 'css/base/side.css' %}">
+    <link rel="stylesheet" href="{% static 'css/news/bootstrap.min.css' %}">
 {#  引入arttemplat  #}
     <script src="{% static 'js/template-web.js' %}"></script>
     <script src="{% static 'js/index.js' %}"></script>
@@ -48,7 +49,7 @@
 		<div class="main-container">
 			<div class="search-group">
                 <form action="" method="get">
-                    <input type="text" class="search-input" placeholder="请输入关键字" name="q">
+                    <input type="text" class="search-input" style="width:512px" placeholder="请输入关键字" name="q">
                     <button class="search-btn">搜索</button>
                 </form>
 			</div>
@@ -59,37 +60,40 @@
                     </p>
                 {% elif flag == 1 %}
                     <p class="list-search-title" style="color: red">
-                    暂未搜索到相关内容，到<a href="{% url 'news:index' %}">主页</a>在看看？
+                    暂未搜索到相关内容
                     </p>
                 {% endif %}
                  <ul class="news-list-group">
-                {% for news in newes %}
-                    <li>
-                     <div class="thumbnail-group">
-                         <a href="{% url 'news:news_detail' news_id=news.pk %}">
-                             <img src="{{ news.thumbnail }}" alt="">
-                         </a>
-                     </div>
-                    <div class="news-group">
-                        <div class="title">
-                            <a href="{% url 'news:news_detail' news_id=news.pk %}">{{ news.title }}</a>
-                        </div>
-                        <p class="desc">{{ news.desc }}</p>
-                        <div class="news-more-group">
-                            <span class="category">{{ news.category.name }}</span>
-                            <span class="pub-time">{{ news.pub_time | time_since}}</span>
-                            {# 加入time_since这样在调用时，将pub_time传给time_since #}
-                            <span class="author">{{ news.author.username }}</span>
+                 <table class="table table-condensed">
+                     <tr>
+                         <th>出发城市</th>
+                         <th>到达城市</th>
+                         <th>出发时间</th>
+                         <th>出发机场</th>
+                         <th>到达时间</th>
+                         <th>到达机场</th>
+                         <th>机票价格</th>
+                         <th>航空公司</th>
+                         <th>航班号</th>
+                     </tr>
+                     {% for item in newes %}
+                    <tr>
+                        <td class="active" >{{ item.departureCityName }}</td>
+                        <td class="success">{{ item.arrivalCityName }}</td>
+                        <td class="active">{{ item.departureDate }} {{ item.departureDatetime }}</td>
+                        <td class="active">{{ item.departureAirportName }}</td>
+                        <td class="success">{{ item.arrivalDate }} {{ item.arrivalDatetime }}</td>
+                        <td class="success">{{ item.arrivalAirportName }}</td>
+                        <td class="warning">{{ item.printprice }}</td>
+                        <td class="danger">{{ item.airlineName }}</td>
+                        <td class="info">{{ item.flightNumber }}</td>
+                    </tr>
+                     {% endfor %}
+                </table>
 
-                        </div>
-                    </div>
-                </li>
-                {% endfor %}
             </ul>
                  <div class="load-more-group">
-                <button class="load-more-btn" data-page="2">
-                    加载更多
-                </button>
+
             </div>
             </div>
 		</div>

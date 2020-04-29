@@ -26,6 +26,7 @@ urlpatterns = [
     path('payinfo/', include('apps.payinfo.urls')),  # 支付界面urls
     path('cms/', include('apps.cms.urls')),  # 后台管理系统urls
     path("ueditor/", include("apps.ueditor.urls")),  # 文本编辑器urls
+    path("ticket/", include("apps.ticket.urls")),  # 机票航线urls
     # 1 将static写在urlpatterns里的写法：
     # static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)[0],
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 2 static写在外面的写法

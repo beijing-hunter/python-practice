@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.news',
     'apps.payinfo',
     'apps.xfzauth',
+    'apps.ticket',
 ]
 
 # 中间键，针对所有的app有效,可以方便批量修改处理时使用
