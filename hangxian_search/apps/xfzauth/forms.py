@@ -4,6 +4,7 @@ from django import forms
 
 from .models import User
 from apps.forms import FormMixin
+from .models import findUserByPhone
 # from utils import restful
 
 
@@ -44,14 +45,7 @@ class RegisterForm(forms.Form, FormMixin):
             "min_length": "用户名最少不能少于3个字符！",
             "max_length": "用户名最多不能多于20个字符！"
         })
-    img_captcha = forms.CharField(
-        max_length=4,
-        min_length=4,
-        error_messages={
-            "min_length": "请输入4位图形验证码！",
-            "max_length": "请输入4位图形验证码！",
-            "required": "请输入图形验证码！"
-        })
+
     password1 = forms.CharField(
         min_length=6,
         max_length=20,
@@ -67,12 +61,6 @@ class RegisterForm(forms.Form, FormMixin):
             "required": "必须输入重复密码！",
             "min_length": "密码最少不能少于6位",
             "max_length": "密码最多不能超过20位！"
-        })
-    sms_captcha = forms.CharField(
-        max_length=4,
-        min_length=4,
-        error_messages={
-            "required": "请输入短信验证码！"
         })
 
     # def clean(self):
@@ -91,33 +79,12 @@ class RegisterForm(forms.Form, FormMixin):
 
             # self.add_error方法是forms中的方法，
             return self.add_error('password1', '两次输入密码不一致！')
-        img_captcha = cleaned_data.get('img_captcha')
-        server_img_captcha = request.session.get('img_captcha')
-        if img_captcha.lower() != server_img_captcha.lower():
-            # 传统表单方式的错误信息提示
-            # messages.info(request,"图形验证码错误！")
-            # return redirect(reverse('xfzauth:register'))
 
-            # ajax前端方式的错误信息提取方式,因为函数validate_data没有返回，所以这种错误返回方式没有用
-            # return restful.params_error('图形验证码错误！')
-
-            return self.add_error('img_captcha', '图形验证码错误！')
-        sms_captcha = cleaned_data.get('sms_captcha')
-        server_sms_captcha = request.session.get('sms_captcha')
-        if sms_captcha.lower() != server_sms_captcha.lower():
-            # 传统表单方式的错误信息提示
-            # messages.info(request,'短信验证码错误！')
-            # return redirect(reverse('xfzauth:register'))
-
-            # ajax前端方式的错误信息提取方式,因为函数validate_data没有返回，所以这种错误返回方式没有用
-            # return restful.params_error('短信验证码错误！')
-
-            return self.add_error('sms_captcha', '短信验证码错误！')
         # 验证用户是否存在
         telephone = cleaned_data.get('telephone')
-        exists = User.objects.filter(
-            telephone=telephone).exists()  # 判断手机号是否存在，返回一个bool值
-        if exists:
+        userInfo =findUserByPhone(telephone)   # 判断手机号是否存在，返回一个bool值
+        print(f"username={ not userInfo.username},username={userInfo.username}")
+        if userInfo.username:
             # 1 传统表单方式的错误信息提示
             # messages.info(request,'该手机号码已经存在！')
             # return redirect(reverse('xfzauth:register'))

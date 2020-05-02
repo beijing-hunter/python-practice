@@ -1,5 +1,43 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
+from apps.daos import dbconection
+
+
+def addUser(telephone, username, password):
+    con = dbconection.dbConnection()
+    cur = con.cursor()
+    sql = "insert into user(telephone,username,password) values(%s,%s,%s)"
+    try:
+        result = cur.execute(sql, (telephone, username, password))
+        con.commit()
+    except Exception as e:
+        con.rollback()
+        print(e)
+    finally:
+        con.close()
+        return cur.lastrowid
+
+
+def findUserByPhone(telephone):
+    con = dbconection.dbConnection()
+    cur = con.cursor()
+    userInfo = User()
+
+    try:
+        sql = "select id,telephone,username,password from user where telephone=%s"
+        cur.execute(sql, (telephone,))
+        result = cur.fetchone()
+
+        if len(result) > 0:
+            userInfo.id = result[0]
+            userInfo.telephone = result[1]
+            userInfo.username = result[2]
+            userInfo.password = result[3]
+    except Exception as e:
+        print(e)
+    finally:
+        con.close()
+        return userInfo
 
 
 class UserManager(BaseUserManager):
@@ -9,7 +47,10 @@ class UserManager(BaseUserManager):
         """#1 创建通用类user"""
         user = self.model(telephone=telephone, username=username, **kwargs)
         user.set_password(password)
-        user.save()
+
+        # user.save()
+        user.id = addUser(user.telephone, user.username, user.password)
+
         return user
 
     def create_user(self, telephone, username, password, **kwargs):
@@ -52,5 +93,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.username
-
-

@@ -10,7 +10,7 @@ from django.db.models import Q
 # 但是他不能处理这种ajax请求。就是说如果通过ajax请求去访问一个需要授权的页面
 # 那么这个装饰器的页面跳转功能就不行了,针对Ajax请求的页面跳转自定义一个装饰器
 # from django.contrib.auth.decorators import login_required
-from apps.xfzauth.decorators import xfz_login_required   # y导入自定义的用于ajax请求的装饰器
+from apps.xfzauth.decorators import xfz_login_required  # y导入自定义的用于ajax请求的装饰器
 from .serializers import NewsSerializer, CommentSerializer  # 导入定义序列化
 from utils import restful
 from .forms import AddCommentForm
@@ -24,7 +24,7 @@ def index(request):
     # 用于加载界面显示新闻的个数，settings中设置的ONE_PAGE_NEWS_COUNT是1，
     # 这里配置后，界面只会展示1篇文章
     newses = News.objects.select_related('category', 'author')[
-        0:settings.ONE_PAGE_NEWS_COUNT]
+             0:settings.ONE_PAGE_NEWS_COUNT]
     categories = NewCategory.objects.all()
     banners = Banner.objects.all()  # 获取轮播图
     # context 中''中的数据是传入HTML模板中的变量，
@@ -34,6 +34,13 @@ def index(request):
         'categories': categories,
         'banners': banners  # 将轮播图数据返回给前端
     }
+
+    if not request.session.get('userId', False):
+        print("未登录")
+    else:
+        user = {"is_authenticated": True, "username": request.session["userName"], "is_staff": False}
+        context["user"] = user
+
     return render(request, 'news/index.html', context=context)
 
 
@@ -124,9 +131,11 @@ def search(request):
     context = {'newes': newes, 'flag': flag}
     return render(request, 'news/search.html', context=context)
 
+
 from .BankDao import *
 
+
 def findBankList(request):
-    banks=findAll()
+    banks = findAll()
     context = {'info': banks}
     return render(request, 'news/banklist.html', context=context)

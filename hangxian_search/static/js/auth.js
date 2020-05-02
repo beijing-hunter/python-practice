@@ -89,7 +89,7 @@ $(function () {
             },
             'success':function (result) {
                 if(result['code'] === 200){
-                    window.location = '/';
+                    window.location = '/ticket/search';
                 }else{
                     //使用message文件的方式将所有错误信息进行返回,相比直接使用js的alert会好看实用写
                     var message = result['message'];

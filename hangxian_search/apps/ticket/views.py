@@ -28,4 +28,9 @@ def search(request):
         flag = 0
 
     context = {'newes': datas, 'flag': flag}
+    if not request.session.get('userId', False):
+        print("未登录")
+    else:
+        user = {"is_authenticated": True, "username": request.session["userName"], "is_staff": False}
+        context["user"] = user
     return render(request, 'news/search.html', context=context)
