@@ -7,9 +7,16 @@
     {% if hots %}
         {% for item in hots %}
 
-            {% if item.hotSailContent %}
-                <a href="{% url 'ticket:search' %}?q={{ item.hotSailContent }}&departureDate=-1">{{ item.hotSailContent }}</a><br>
-            {% endif %}
+                <a href="{% url 'ticket:search' %}?departureCity={{ item.departureCity }}&arrivalCity={{ item.arrivalCity }}&departureDate=-1">
+                                {% if item.departureCity %}
+                                    出发地：{{ item.departureCity }}
+                                {% endif %}
+                                {% if item.arrivalCity %}
+                                    目的地：{{ item.arrivalCity }}
+                                {% endif %}
+
+                </a>
+
 
         {% endfor %}
 
@@ -22,11 +29,19 @@
             <div class="item-group">
                 {% if records %}
                      {% for item in records %}
-                         {% if item.searchKey %}
+
                         <div class="text-group">
-                            <a href="{% url 'ticket:search' %}?q={{ item.searchKey }}&departureDate=-1">{{ item.searchKey }}</a>
-                        </div>
-                         {% endif %}
+                            <a href="{% url 'ticket:search' %}?departureCity={{ item.departureCity }}&arrivalCity={{ item.arrivalCity }}&departureDate=-1">
+                                {% if item.departureCity %}
+                                    出发地：{{ item.departureCity }}
+                                {% endif %}
+                                {% if item.arrivalCity %}
+                                    目的地：{{ item.arrivalCity }}
+                                {% endif %}
+
+                            </a>
+                        </div><br/>
+
                      {% endfor %}
                 {% endif %}
             </div>

@@ -9,12 +9,13 @@ from apps.ticket.models import *
 
 def search(request):
     """查询，返回一个查询页面 """
-    q = request.GET.get('q')
-    departureDate=request.GET.get('departureDate')
-    if q:
-        datas = findInfos(q,departureDate)
+    departureCity = request.GET.get('departureCity')
+    arrivalCity = request.GET.get('arrivalCity')
+    departureDate = request.GET.get('departureDate')
+    if departureCity or arrivalCity:
+        datas = findInfos(departureCity, arrivalCity, departureDate)
         if datas:
-            addHotSail(datas[0].departureCityName+"到"+datas[0].arrivalCityName)
+            addHotSail(datas[0].departureCityName, datas[0].arrivalCityName)
             flag = 2
         else:
             page = int(request.GET.get('p', 1))
@@ -36,8 +37,8 @@ def search(request):
     else:
         user = {"is_authenticated": True, "username": request.session["userName"], "is_staff": False}
         context["user"] = user
-        addSearchRecord(int(request.session["userId"]), q)
+        addSearchRecord(int(request.session["userId"]), departureCity, arrivalCity)
         context["records"] = findSearchRecrods(int(request.session["userId"]))
-        context["hots"]=findHotSail()
-        context["chuFaDate"]=findDepartureDate()
+        context["hots"] = findHotSail()
+        context["chuFaDate"] = findDepartureDate()
     return render(request, 'news/search.html', context=context)
