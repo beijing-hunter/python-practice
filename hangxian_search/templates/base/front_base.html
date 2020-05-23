@@ -21,12 +21,9 @@
 <body>
     <header class="header">
         <nav class="nav">
-            <a href="{% url 'news:index' %}"><h1 class="login-box"></h1></a>
+            <a href="#"><h1 class="login-box" style="background: url(http://localhost:9000/1.pgn);">航线</h1></a>
 
             <ul class="menu">
-                <li><a href="/">首页</a></li>
-                <li><a href="{% url 'course:index' %}">课程资讯</a></li>
-                <li><a href="{% url 'payinfo:index' %}">知识分享</a></li>
                 <li><a href="{% url 'ticket:search' %}">搜索</a></li>
             </ul>
             <div class="auth-group">

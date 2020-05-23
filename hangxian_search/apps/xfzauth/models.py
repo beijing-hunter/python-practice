@@ -4,6 +4,13 @@ from apps.daos import dbconection
 
 
 def addUser(telephone, username, password):
+    """
+    注册用户
+    :param telephone:
+    :param username:
+    :param password:
+    :return:
+    """
     con = dbconection.dbConnection()
     cur = con.cursor()
     sql = "insert into user(telephone,username,password) values(%s,%s,%s)"
@@ -19,6 +26,11 @@ def addUser(telephone, username, password):
 
 
 def findUserByPhone(telephone):
+    """
+    根据手机号查询用户信息
+    :param telephone:
+    :return:
+    """
     con = dbconection.dbConnection()
     cur = con.cursor()
     userInfo = User()

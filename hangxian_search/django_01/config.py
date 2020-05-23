@@ -1,26 +1,22 @@
-# 数据库
-MYSQL_NAME = 'zhangxian_search'
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'root'
-MYSQL_HOST = '192.168.199.88'
-MYSQL_POST = '3306'
 
-# 阿里云短信服务
+MYSQL_NAME = ''
+MYSQL_USER = ''
+MYSQL_PASSWORD = ''
+MYSQL_HOST = ''
+MYSQL_POST = ''
+
 ALI_ACCESS_KEY_ID = ""
 ALI_ACCESS_KEY_SECRET = ""
 ALI_SIGN_NAME = ""
 ALI_TEMPLATE_CODE = ""
 
-# 七牛云存储
 QINIU_ACCESS_KEY = ''
 QINIU_SECRET_KEY = ''
 QINIU_BUCKET_NAME = ''
 QINIU_DOMAIN = ''
 
-# 百度云点播
 BAIDU_CLOUD_USER_ID = ""
 BAIDU_CLOUD_USER_KEY = ''
 
-# 支付pypay
 PAY_TOKEN = ''
 PAY_UID = ''

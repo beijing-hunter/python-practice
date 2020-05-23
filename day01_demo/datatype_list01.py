@@ -1,5 +1,6 @@
 datas = [12, 45, 14, 55]
-
+datass=[]
+print(''.join(datass))
 print(datas[1])
 print(datas.index(12))
 print(datas.count(14))

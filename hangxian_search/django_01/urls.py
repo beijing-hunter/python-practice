@@ -20,12 +20,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # django自带的admin用户路由界面
-    path('', include('apps.news.urls')),  # 新闻路由界面，apps.name用于区分命名空间下对应的urls
     path('account/', include('apps.xfzauth.urls')),  # 登录注册界面的主urls
-    path('course/', include('apps.course.urls')),  # 创业课堂页面的主urls
-    path('payinfo/', include('apps.payinfo.urls')),  # 支付界面urls
-    path('cms/', include('apps.cms.urls')),  # 后台管理系统urls
-    path("ueditor/", include("apps.ueditor.urls")),  # 文本编辑器urls
     path("ticket/", include("apps.ticket.urls")),  # 机票航线urls
     # 1 将static写在urlpatterns里的写法：
     # static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)[0],

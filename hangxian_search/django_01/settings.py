@@ -40,10 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.course',
-    'apps.cms',
-    'apps.news',
-    'apps.payinfo',
     'apps.xfzauth',
     'apps.ticket',
 ]
