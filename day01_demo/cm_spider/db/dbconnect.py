@@ -58,7 +58,7 @@ def findAll():
     postInfos = []
 
     try:
-        sql = "select id,title,link_url,platform_id,platform_post_token from cm_post where status=1"
+        sql = "select id,title,link_url,platform_id,platform_post_token from cm_post where status=1 and platform_id in (1,2,4,6,8,11,13)"
         cur.execute(sql)
         result = cur.fetchall()
         if len(result) > 0:
@@ -78,7 +78,7 @@ def updateInfo(postInfo):
     cur = con.cursor()
 
     try:
-        sql = "update cm_post set status=%s,in_keys=%s where id=%s"
+        sql = "update cm_post set status=%s,in_keys=%s,update_time=now() where id=%s"
         cur.execute(sql, (postInfo["status"],postInfo["inKeys"],postInfo["id"]))
         con.commit()
     except Exception as e:
