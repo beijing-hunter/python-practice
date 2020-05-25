@@ -42,6 +42,6 @@ def forFile(mkdirPath):
     """
     for root, dirs, files in os.walk(mkdirPath):
         for f in files:
-            filePath = mkdirPath + "\\" + f.title()
+            filePath = mkdirPath + "/" + f.title()
             if f.title().lower().find("txt") > 0:
                 dataAdd(filePath)
