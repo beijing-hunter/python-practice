@@ -1,0 +1,126 @@
+// ==UserScript==
+// @name         中国日报网-时政频道
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://china.chinadaily.com.cn/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    var datas=[];
+    var timeIntervalValue;
+
+    $("[class='left-liebiao']").before("<a id='exportData' href='#' class='b-s-contain showSendMsg'><i class='iconfont goHomeIcon'>や</i><span>数据导出</span></a>");
+    $("[class='left-liebiao']").before("<a id='exportDataSartTime' href='#' class='b-s-contain showSendMsg'><i class='iconfont goHomeIcon'>や</i><span>开始收集数据</span></a>");
+    $("#exportData").bind('click',function(){
+
+
+
+        filterContent();
+
+
+
+    });
+     $("#exportDataSartTime").bind('click',function(){
+
+          datas=[];
+
+            forExportData();
+            exportData(JSON.stringify(datas),"11");
+         if(datas.length>0){
+             page();
+         }
+
+
+    });
+      timeIntervalValue=setInterval(function () {
+           $("#exportDataSartTime").click();
+
+        }, 5000);
+
+
+
+
+
+
+    function forExportData(){
+        $("[class='busBox3']").each(function(index,ob){
+
+            var hrefValue="https:"+$(ob).find("h3").find("a").attr("href");
+
+            var titleValue=$(ob).find("h3").find("a").text();
+
+            var hrefs=hrefValue.split("/");
+            var platformPostToken=hrefs[hrefs.length-1];
+            var platformId=11;
+            var days=$(ob).find("b").text().split(" ")[0].split("-");
+            console.log(days);
+
+            if(parseInt(days[2])>=18&&parseInt(days[1])>=5&&parseInt(days[0])>=2020){
+                var data={"title":titleValue,"linkUrl":hrefValue,"platformId":platformId,"platformPostToken":platformPostToken};
+                datas.push(data);
+                console.log(JSON.stringify(data));
+            }else{
+                clearInterval(timeIntervalValue);
+            }
+
+        });
+    }
+
+    function filterContent(){
+
+
+    }
+
+    function page(){
+
+        $("#div_currpage").find(".pagestyle").each(function(index,ob){
+            var ch= $(ob).attr("href");
+            console.log(ch);
+            window.location.href=ch;
+        });
+    }
+
+    //数据下载到本地
+    function exportData(datas,platformId){
+        var content =datas;
+        var eleLink = document.createElement('a');
+        let date = new Date();
+        var dateStr=dateFormat("YYYY-mm-dd HH:MM", date)
+        eleLink.download = platformId+"_"+dateStr+".txt";
+        eleLink.style.display = 'none';
+        // 字符内容转变成blob地址
+        var blob = new Blob([content]);
+        eleLink.href = URL.createObjectURL(blob);
+        // 触发点击
+        document.body.appendChild(eleLink);
+        eleLink.click();
+        // 然后移除
+        document.body.removeChild(eleLink);
+    }
+
+    function dateFormat(fmt, date) {
+    let ret;
+    const opt = {
+        "Y+": date.getFullYear().toString(),        // 年
+        "m+": (date.getMonth() + 1).toString(),     // 月
+        "d+": date.getDate().toString(),            // 日
+        "H+": date.getHours().toString(),           // 时
+        "M+": date.getMinutes().toString(),         // 分
+        "S+": date.getSeconds().toString()          // 秒
+        // 有其他格式化字符需求可以继续添加，必须转化成字符串
+    };
+    for (let k in opt) {
+        ret = new RegExp("(" + k + ")").exec(fmt);
+        if (ret) {
+            fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+        };
+    };
+    return fmt;
+}
+
+    // Your code here...
+})();
