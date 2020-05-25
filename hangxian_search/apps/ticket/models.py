@@ -23,44 +23,41 @@ class SearchRecord():
     def __init__(self):
         self.id = 0
         self.userId = 0
-        self.departureCity = ""
-        self.arrivalCity = ""
+        self.searchKey = ""
 
 
 class HotSail():
     def __init__(self):
         self.hotSailContent = ""
         self.hotCount = 0
-        self.departureCity = ""
-        self.arrivalCity = ""
 
 
-def findInfos(departureCity, arrivalCity, departureDate):
+def findInfos(searchKey, departureDate):
     """
     根据搜索信息，查询航班信息
     """
     con = dbconection.dbConnection()
     cur = con.cursor()
     datas = []
-    sqlParam = []
+    dIndex = searchKey.find("到")
 
     try:
         sql = "select departureCityName,arrivalCityName,departureDate,departureDatetime,departureAirportName,arrivalDate,arrivalDatetime,arrivalAirportName,printprice,airlineName,flightNumber"
-        sql = sql + " from ticket where 1=1 "
 
-        if len(departureDate) > 0 and departureDate != '-1':
-            sqlParam.append(departureDate)
-            sql = sql + " and departureDate=%s  "
-        if len(departureCity) > 0:
-            sql = sql + " and departureCityName=%s "
-            sqlParam.append(departureCity.strip())
-        if len(arrivalCity) > 0:
-            sql = sql + " and arrivalCityName=%s "
-            sqlParam.append(arrivalCity)
-        sql = sql + "   order by departureDate desc,departureDatetime "
+        if dIndex >= 0:
+            sql = sql + " from ticket where" + (" departureDate=%s and " if len(departureDate) > 0 and departureDate != '-1' else "") + " departureCityName=%s and arrivalCityName=%s order by departureDate desc,departureDatetime"
+            keys = searchKey.split("到")
 
-        if len(sqlParam) > 0:
-            cur.execute(sql, tuple(sqlParam))
+            if len(departureDate)>0 and departureDate!='-1':
+                cur.execute(sql, (departureDate,keys[0].strip(), keys[1].strip()))
+            else:
+                cur.execute(sql, (keys[0].strip(), keys[1].strip()))
+        else:
+            sql = sql + " from ticket where "+ (" departureDate=%s and " if len(departureDate) > 0 and departureDate != '-1' else "")+" (departureCityName=%s or arrivalCityName=%s) order by departureDate desc,departureDatetime"
+            if len(departureDate) > 0 and departureDate != '-1':
+                cur.execute(sql, (departureDate,searchKey, searchKey))
+            else:
+                cur.execute(sql, (searchKey, searchKey))
         result = cur.fetchall()
         if len(result) > 0:
             for item in result:
@@ -77,15 +74,14 @@ def findInfos(departureCity, arrivalCity, departureDate):
                 info.airlineName = item[9]
                 info.flightNumber = item[10]
                 datas.append(info)
-
     except Exception as e:
         print(e)
     finally:
         con.close()
-    return datas
+        return datas
 
 
-def addSearchRecord(userId, departureCity, arrivalCity):
+def addSearchRecord(userId, searchKey):
     """
     添加用户搜索记录
     :param userId:
@@ -94,9 +90,9 @@ def addSearchRecord(userId, departureCity, arrivalCity):
     """
     con = dbconection.dbConnection()
     cur = con.cursor()
-    sql = "insert into search_record(userId,departureCity,arrivalCity) values(%s,%s,%s)"
+    sql = "insert into search_record(userId,searchKey) values(%s,%s)"
     try:
-        result = cur.execute(sql, (userId, departureCity, arrivalCity))
+        result = cur.execute(sql, (userId, searchKey))
         con.commit()
     except Exception as e:
         con.rollback()
@@ -117,14 +113,13 @@ def findSearchRecrods(userId):
     datas = []
 
     try:
-        sql = "SELECT DISTINCT departureCity,arrivalCity FROM search_record WHERE userId=%s ORDER BY id DESC LIMIT 20"
+        sql = "SELECT DISTINCT searchKey FROM search_record WHERE userId=%s ORDER BY id DESC LIMIT 20"
         cur.execute(sql, (userId,))
         result = cur.fetchall()
         if len(result) > 0:
             for item in result:
                 info = SearchRecord()
-                info.departureCity = item[0]
-                info.arrivalCity = item[1]
+                info.searchKey = item[0]
                 datas.append(info)
     except Exception as e:
         print(e)
@@ -133,7 +128,7 @@ def findSearchRecrods(userId):
         return datas
 
 
-def addHotSail(departureCity, arrivalCity):
+def addHotSail(searchKey):
     """
     添加热门航线
     :param searchKey:
@@ -143,7 +138,7 @@ def addHotSail(departureCity, arrivalCity):
     cur = con.cursor()
     sql = "insert into hot_sail(hot_sail_content) values(%s)"
     try:
-        result = cur.execute(sql, (departureCity + "到" + arrivalCity))
+        result = cur.execute(sql, (searchKey,))
         con.commit()
     except Exception as e:
         con.rollback()
@@ -171,10 +166,7 @@ def findHotSail():
             for item in result:
                 info = HotSail()
                 info.hotSailContent = item[0]
-                keys = info.hotSailContent.split("到")
                 info.hotCount = item[1]
-                info.departureCity = keys[0]
-                info.arrivalCity = keys[1]
                 datas.append(info)
     except Exception as e:
         print(e)
