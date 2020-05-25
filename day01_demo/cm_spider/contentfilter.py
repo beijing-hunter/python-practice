@@ -9,7 +9,7 @@ def getHtmlContent(hrefUrl,platformId):
             'Accept-Encoding':'',
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE'
         }
-        response = requests.get(hrefUrl,headers=headers)
+        response = requests.get(hrefUrl,headers=headers,timeout=2)
         if platformId==8:
             htmlContent = response.content.decode("ISO-8859-1")
         else:
