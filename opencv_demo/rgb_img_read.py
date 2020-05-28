@@ -1,5 +1,4 @@
 import cv2
-import dlib
 
 # 读取图片
 imgfile = cv2.imread("imges/demo3x2.png")

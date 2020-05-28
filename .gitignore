@@ -2,3 +2,4 @@
 *.xml
 /.idea
 xu_ni_huan_jing_code/
+opencv_demo/__pycache__
