@@ -2,8 +2,12 @@
 *.xml
 /.idea
 xu_ni_huan_jing_code/
+<<<<<<< HEAD
 day01_demo/cm_spider/__pycache__/__init__.cpython-38.pyc
 day01_demo/cm_spider/__pycache__/contentfilter.cpython-38.pyc
 day01_demo/cm_spider/__pycache__/filereader.cpython-38.pyc
 day01_demo/cm_spider/db/__pycache__/__init__.cpython-38.pyc
 day01_demo/cm_spider/db/__pycache__/dbconnect.cpython-38.pyc
+=======
+opencv_demo/__pycache__
+>>>>>>> 22738d073d3204ee1adac27cd073d94373e066dd

@@ -58,7 +58,11 @@ def findAll():
     postInfos = []
 
     try:
+<<<<<<< HEAD
         sql = "select id,title,link_url,platform_id,platform_post_token from cm_post where status=1 and create_time >=DATE('2020-06-10') and platform_id in (1,2,4,6,8,11,13,23) order by id desc"
+=======
+        sql = "select id,title,link_url,platform_id,platform_post_token from cm_post where status=1 and create_time >=DATE('2020-05-25') and platform_id in (1,2,4,6,8,11,13,22) order by id desc"
+>>>>>>> 22738d073d3204ee1adac27cd073d94373e066dd
         cur.execute(sql)
         result = cur.fetchall()
         if len(result) > 0:
