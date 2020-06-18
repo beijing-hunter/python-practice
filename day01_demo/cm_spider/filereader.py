@@ -28,7 +28,9 @@ def dataAdd(filePath):
     jsonContent = read(filePath)
     datas = jsonToObject(jsonContent)
     for item in datas:
-        print(item["title"])
+        if not ("title" in item.keys()):
+            continue
+        print(item.get("title"))
         postInfo, count = dbconnect.findOne(item["platformId"], item["platformPostToken"])
         if count == 0:
             dbconnect.addData(item)

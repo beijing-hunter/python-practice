@@ -52,13 +52,14 @@ def findOne(platformId, platformPostToken):
         con.close()
         return postInfo, count
 
+
 def findAll():
     con = dbConnection()
     cur = con.cursor()
     postInfos = []
 
     try:
-        sql = "select id,title,link_url,platform_id,platform_post_token from cm_post where status=1 and create_time >=DATE('2020-05-25') and platform_id in (1,2,4,6,8,11,13,22) order by id desc"
+        sql = "select id,title,link_url,platform_id,platform_post_token from cm_post where status=1 and create_time >=DATE('2020-06-01') and platform_id in (1,2,4,6,8,11,13,22,23,24) order by id desc"
         cur.execute(sql)
         result = cur.fetchall()
         if len(result) > 0:
@@ -79,7 +80,7 @@ def updateInfo(postInfo):
 
     try:
         sql = "update cm_post set status=%s,in_keys=%s,update_time=now() where id=%s"
-        cur.execute(sql, (postInfo["status"],postInfo["inKeys"],postInfo["id"]))
+        cur.execute(sql, (postInfo["status"], postInfo["inKeys"], postInfo["id"]))
         con.commit()
     except Exception as e:
         print(e)
