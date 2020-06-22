@@ -3,7 +3,7 @@ import pymysql
 
 def dbConnection():
     try:
-        con = pymysql.connect(host="123.56.4.34", user="root", password="cmt123", database="cmt_spider", port=3306)
+        con = pymysql.connect(host="123.56.4.34", user="root", password="123456", database="cmt_spider", port=3306)
     except Exception as e:
         print(e)
     finally:
