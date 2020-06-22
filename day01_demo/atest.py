@@ -2,7 +2,5 @@ from cm_spider import filereader,contentfilter,htmlparse
 
 filereader.forFile("/Users/cmt/Desktop/cmt/zixun/")
 contentfilter.filterData()
-#content=contentfilter.getHtmlContent("https://www.thepaper.cn/newsDetail_forward_7885361",23)
+#content=contentfilter.getHtmlContent("http://www.bjd.com.cn/a/202006/19/WS5eec24abe4b00aba04d22853.html",16)
 #print(content)
-#parseValue=htmlparse.ppParse(content)
-#print("data type=%s,data value=%s" % (type(parseValue), parseValue))

@@ -5,22 +5,23 @@ from .htmlparse import htmlParseFacotry
 
 def getHtmlContent(hrefUrl, platformId):
     htmlContent = ""
+
     try:
         headers = {
             'Accept-Encoding': '',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE'
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36'
         }
+
         response = requests.get(hrefUrl, headers=headers, timeout=2)
         if platformId == 8:
             htmlContent = response.content.decode("ISO-8859-1")
         else:
             htmlContent = response.content.decode()
-            htmlContent = htmlParseFacotry(htmlContent,platformId)
+            htmlContent = htmlParseFacotry(htmlContent, platformId)
 
     except Exception as e:
         print(e)
-    finally:
-        return htmlContent
+    return htmlContent
 
 
 def filterKey(hrefUrl, platformId):

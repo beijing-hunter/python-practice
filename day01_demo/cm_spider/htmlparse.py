@@ -7,6 +7,8 @@ def htmlParseFacotry(htmlContent, platformId):
     """
     if platformId == 24:
         return ppParse(htmlContent)
+    if platformId == 16:
+        return xinJingBao(htmlContent)
     return htmlContent
 
 
@@ -16,5 +18,13 @@ def ppParse(htmlContent):
     """
     htmlOb = etree.HTML(htmlContent, etree.HTMLParser())
     newContentList = htmlOb.xpath('//div[@class="news_txt"]/text()')
-    print(newContentList)
     return str(newContentList);
+
+
+def xinJingBao(htmlContent):
+    """
+    新京报内容解析
+    """
+    htmlOb = etree.HTML(htmlContent, etree.HTMLParser())
+    newContentList = htmlOb.xpath('//div/p/text()')
+    return str(newContentList)
