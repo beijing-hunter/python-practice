@@ -3,7 +3,7 @@ import pymysql
 
 def dbConnection():
     try:
-        con = pymysql.connect(host="123.56.4.34", user="root", password="123456", database="cmt_spider", port=3306)
+        con = pymysql.connect(host="123.56.4.38", user="root", password="123467", database="cmt_spider", port=3306)
     except Exception as e:
         print(e)
     finally:
@@ -59,7 +59,7 @@ def findAll():
     postInfos = []
 
     try:
-        sql = "select id,title,link_url,platform_id,platform_post_token from cm_post where status=1 and create_time >=DATE('2020-06-19') and platform_id in (1,2,4,6,8,11,13,22,23,24,16) order by id desc"
+        sql = "select id,title,link_url,platform_id,platform_post_token from cm_post where status=1 and create_time >=DATE('2020-08-17') and platform_id in (1,2,4,6,8,11,13,22,23,24,16) order by id desc"
         cur.execute(sql)
         result = cur.fetchall()
         if len(result) > 0:
